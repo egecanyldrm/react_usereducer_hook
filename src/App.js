@@ -1,25 +1,55 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useReducer, useState } from 'react';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+
+
+
+const App = () => {
+
+
+
+
+
+    const [data, setData] = useState("");
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState("");
+
+    const fetchData = () => {
+
+        setData("");
+        setLoading(true);
+        setError("");
+
+        fetch('https://dog.ceo/api/breeds/image/random')
+            .then(response => response.json())
+            .then((response) => {
+                setLoading(false)
+                setData(response.message);
+            })
+            .catch((error) => {
+                setLoading(false)
+                setError('')
+                setData('')
+            }
+            )
+
+    }
+
+
+    return (
+        <div>
+            <h2>Fetch Dog API </h2>
+            <button onClick={fetchData} disabled={loading} >Fetch Data </button>
+            <br /> <br />
+        {data &&  <img src={data} alt="Random dog" />  }
+        <br />
+        {error &&  <div> {error} </div> }
+
+        </div>
+    )
+
+};
 
 export default App;
+
+
+
